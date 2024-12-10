@@ -1,8 +1,8 @@
 #include "../singleraytrace/tracesingleray.h"
 #include "../utils/scenedata.h"
-#include "light/texturemap.h"
-#include "utils/imagereader.h"
-#include "utils/rgba.h"
+#include "../light/texturemap.h"
+#include "../utils/imagereader.h"
+#include "../utils/rgba.h"
 #include <cfloat>
 #include <cmath>
 #include <glm/glm.hpp>

@@ -1,6 +1,6 @@
 #include "texturemap.h"
 #include "../shapes/shapeoverall.h"
-#include "utils/scenedata.h"
+#include "../utils/scenedata.h"
 #include <cmath>
 #include <iostream>
 #include <numbers>

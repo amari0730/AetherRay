@@ -1,8 +1,8 @@
 #pragma once
 
-#include "camera/camera.h"
-#include "utils/scenedata.h"
-#include "utils/sceneparser.h"
+#include "../camera/camera.h"
+#include "../utils/scenedata.h"
+#include "../utils/sceneparser.h"
 
 /**
  * @brief The RayTraceScene class: class for with scene information for raytracing purposes

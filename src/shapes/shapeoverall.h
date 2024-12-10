@@ -11,6 +11,7 @@ using GetIntersection = auto() -> float;
 using GetObjectNormal = auto() -> glm::vec4;
 using GetUV = auto() -> std::tuple<float, float>;
 
+float getDiscriminant(float a, float b, float c);
 /**
  * @brief The ShapeIntersect class: interface for getting intersection with a
  * shape

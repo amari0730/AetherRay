@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include "utils/rgba.h"
+#include "../utils/rgba.h"
 #include <random>
 
 // A forward declaration for the RaytraceScene class

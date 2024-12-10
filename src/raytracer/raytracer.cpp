@@ -5,7 +5,7 @@
 #include <cmath>
 #include <glm/glm.hpp>
 #include <iostream>
-
+#include "../lenses/lenseassemblies.h"
 /**
  * @brief RayTracer::RayTracer: constructor for the ray tracer class that sets
  * the configuration
@@ -25,7 +25,7 @@ void RayTracer::render(RGBA *imageData, const RayTraceScene &scene) {
     float viewPlaneHeight = 2 * k * tan(scene.getCamera().getHeightAngle() / 2);
     // using aspect ratio to get the width of the view plane
     float viewPlaneWidth = scene.getCamera().getAspectRatio() * viewPlaneHeight;
-    const int samplesPerPixel = 60;
+    const int samplesPerPixel = 100;
     // iterate through each pixel and trace a ray
 
     for (int j = 0; j < scene.height(); ++j) {
@@ -43,34 +43,78 @@ void RayTracer::render(RGBA *imageData, const RayTraceScene &scene) {
             glm::vec4 eye = glm::vec4(0, 0, 0, 1);
             glm::vec4 direction = uvk - eye;
             glm::vec4 accumulatedColor = glm::vec4(0, 0, 0, 255);
-            // transform the ra into world space from camera space
-            glm::vec4 transformedEye = scene.getCamera().getViewMatrixInverse() * eye;
-            // FIX FROM INTERSECT MENTOR MEETING: not truncating view matrix inverse
-            // here
-            glm::vec4 transformedD =
-                scene.getCamera().getViewMatrixInverse() * direction;
-            // You could have the shutter open for 1/1000th of a second every frame, or 1/60th of a second.
-            for (int k = 0; k < samplesPerPixel; k++) {
-                float open = (float)(k) / (float)samplesPerPixel;
-                float close = (float)(k + 1) / (float)samplesPerPixel;
-                double rayTime = open + (static_cast<double>(arc4random()) / RAND_MAX) * (close - open);
-                RGBA color = traceRay(transformedEye, transformedD, scene, m_config, 0, rayTime);
-                accumulatedColor.r += color.r;
-                accumulatedColor.b += color.b;
-                accumulatedColor.g += color.g;
-            }
+            direction.z *= -1.f;
+            auto [newDirection, newPosition, inLens] =
+                computeLensesAdjustedDirection(direction);
+            // std::cout << inLens << std::endl;
+            if (inLens) {
 
-            accumulatedColor /= (float)(samplesPerPixel);
-            RGBA finalColor;
-            for (int i = 0; i < 3; i++) {
-                accumulatedColor[i] = (int)std::min(255.f, std::max(0.f, accumulatedColor[i]));
+
+                direction = glm::vec4(newDirection, 0);
+                direction.z *= -1.f;
+                eye = glm::vec4(newPosition, 1);
+                eye.z *= -1.f;
+                // transform the ray into world space from camera space
+                glm::vec4 transformedEye =
+                    scene.getCamera().getViewMatrixInverse() * eye;
+                glm::vec4 transformedD =
+                    scene.getCamera().getViewMatrixInverse() * direction;
+
+                // trace the ray and set the correct image value
+                for (int k = 0; k < samplesPerPixel; k++) {
+                    float open = (float)(k) / (float)samplesPerPixel;
+                    float close = (float)(k + 1) / (float)samplesPerPixel;
+                    double rayTime = open + (static_cast<double>(arc4random()) / RAND_MAX) * (close - open);
+                    RGBA color = traceRay(transformedEye, transformedD, scene, m_config, 0, rayTime);
+                    accumulatedColor.r += color.r;
+                    accumulatedColor.b += color.b;
+                    accumulatedColor.g += color.g;
+                }
+
+                accumulatedColor /= (float)(samplesPerPixel);
+                RGBA finalColor;
+                for (int i = 0; i < 3; i++) {
+                    accumulatedColor[i] = (int)std::min(255.f, std::max(0.f, accumulatedColor[i]));
+                }
+                finalColor.r = accumulatedColor.r;
+                finalColor.g = accumulatedColor.g;
+                finalColor.b = accumulatedColor.b;
+                finalColor.a = 255;
+                // trace the ray and set the correct image value
+                imageData[j * scene.width() + i] = finalColor;
+
+            } else {
+                imageData[j * scene.width() + i] = RGBA{255, 255, 255};
             }
-            finalColor.r = accumulatedColor.r;
-            finalColor.g = accumulatedColor.g;
-            finalColor.b = accumulatedColor.b;
-            finalColor.a = 255;
-            // trace the ray and set the correct image value
-            imageData[j * scene.width() + i] = finalColor;
+            // transform the ra into world space from camera space
+            // glm::vec4 transformedEye = scene.getCamera().getViewMatrixInverse() * eye;
+            // // FIX FROM INTERSECT MENTOR MEETING: not truncating view matrix inverse
+            // // here
+            // glm::vec4 transformedD =
+            //     scene.getCamera().getViewMatrixInverse() * direction;
+
+            // // You could have the shutter open for 1/1000th of a second every frame, or 1/60th of a second.
+            // for (int k = 0; k < samplesPerPixel; k++) {
+            //     float open = (float)(k) / (float)samplesPerPixel;
+            //     float close = (float)(k + 1) / (float)samplesPerPixel;
+            //     double rayTime = open + (static_cast<double>(arc4random()) / RAND_MAX) * (close - open);
+            //     RGBA color = traceRay(transformedEye, transformedD, scene, m_config, 0, rayTime);
+            //     accumulatedColor.r += color.r;
+            //     accumulatedColor.b += color.b;
+            //     accumulatedColor.g += color.g;
+            // }
+
+            // accumulatedColor /= (float)(samplesPerPixel);
+            // RGBA finalColor;
+            // for (int i = 0; i < 3; i++) {
+            //     accumulatedColor[i] = (int)std::min(255.f, std::max(0.f, accumulatedColor[i]));
+            // }
+            // finalColor.r = accumulatedColor.r;
+            // finalColor.g = accumulatedColor.g;
+            // finalColor.b = accumulatedColor.b;
+            // finalColor.a = 255;
+            // // trace the ray and set the correct image value
+            // imageData[j * scene.width() + i] = finalColor;
         }
     }
 }

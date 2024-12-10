@@ -1,10 +1,10 @@
 #ifndef LIGHTING_H
 #define LIGHTING_H
 
-#include "raytracer/raytracer.h"
-#include "raytracer/raytracescene.h"
-#include "utils/rgba.h"
-#include "utils/scenedata.h"
+#include "../raytracer/raytracer.h"
+#include "../raytracer/raytracescene.h"
+#include "../utils/rgba.h"
+#include "../utils/scenedata.h"
 #include <glm/glm.hpp>
 
 RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,

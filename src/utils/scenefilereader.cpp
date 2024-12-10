@@ -852,6 +852,27 @@ bool ScenefileReader::parsePrimitive(const QJsonObject &prim, SceneNode *node) {
         std::cout << "Moving Sphere center2: " << center2[0] << " " << center2[1] << " " << center2[2] << std::endl;
         primitive->center2 = center2;
     }
+    else if (primType == "movingCube") {
+        primitive->type = PrimitiveType::PRIMITIVE_CUBE_MOVING;
+        auto arr = prim["center2"].toArray();
+        glm::vec3 center2 = glm::vec3(arr[0].toDouble(), arr[1].toDouble(), arr[2].toDouble()); // IN OBJECT SPACE;
+        std::cout << "Moving Cube center2: " << center2[0] << " " << center2[1] << " " << center2[2] << std::endl;
+        primitive->center2 = center2;
+    }
+    else if (primType == "movingCone") {
+        primitive->type = PrimitiveType::PRIMITIVE_CONE_MOVING;
+        auto arr = prim["center2"].toArray();
+        glm::vec3 center2 = glm::vec3(arr[0].toDouble(), arr[1].toDouble(), arr[2].toDouble()); // IN OBJECT SPACE;
+        std::cout << "Moving Cone center2: " << center2[0] << " " << center2[1] << " " << center2[2] << std::endl;
+        primitive->center2 = center2;
+    }
+    else if (primType == "movingCylinder") {
+        primitive->type = PrimitiveType::PRIMITIVE_CYLINDER_MOVING;
+        auto arr = prim["center2"].toArray();
+        glm::vec3 center2 = glm::vec3(arr[0].toDouble(), arr[1].toDouble(), arr[2].toDouble()); // IN OBJECT SPACE;
+        std::cout << "Moving Cylinder center2: " << center2[0] << " " << center2[1] << " " << center2[2] << std::endl;
+        primitive->center2 = center2;
+    }
     else if (primType == "mesh") {
         primitive->type = PrimitiveType::PRIMITIVE_MESH;
         if (!prim.contains("meshFile")) {

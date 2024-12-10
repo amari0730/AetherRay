@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/rgba.h"
+#include "rgba.h"
 #include <QString>
 #include <QImage>
 #include <iostream>
