@@ -15,10 +15,10 @@ typedef struct Lens {
         // to this one
 } lens_t;
 
-lens_t globalLens1 = {0.2, 1.1, 0.5};
-// lens_t globalLens2 = {-0.5, 1.2, 0.5};
-std::vector<lens_t> lenses = {globalLens1};
-// std::vector<lens_t> lenses = {globalLens1, globalLens2};
+lens_t globalLens1 = {1, 1.2, 3};
+lens_t globalLens2 = {5, 5, 5};
+// std::vector<lens_t> lenses = {globalLens1};
+std::vector<lens_t> lenses = {globalLens1, globalLens2};
 
 typedef struct Aperture {
     float apertureRadius;
@@ -123,18 +123,24 @@ computeLensAdjustedDirection(glm::vec3 initialDirection,
 
     if (tValues.size() > 0) {
         float t = lens.lensRadius > 0
-                      ? *std::max_element(tValues.begin(), tValues.end())
-                      : *std::min_element(tValues.begin(), tValues.end());
+                      ? *std::min_element(tValues.begin(), tValues.end())
+                      : *std::max_element(tValues.begin(), tValues.end());
         glm::vec3 intersectionPoint = initialDirection * t + initialPosition;
         // std::cout << "t:" << t << std::endl;
+        // std::cout << "intersection" << std::endl;
+        // std::cout << intersectionPoint.x << std::endl;
+        // std::cout << intersectionPoint.y << std::endl;
+        // std::cout << intersectionPoint.z << std::endl;
+
         glm::vec3 lensNormal = LensSphereNormal(
-            intersectionPoint - (cumulativeThickness + lens.thickness));
+            intersectionPoint -
+            (glm::vec3(0, 0, cumulativeThickness + lens.thickness)));
         // std::cout << "lensnormal" << std::endl;
         // std::cout << lensNormal.x << std::endl;
         // std::cout << lensNormal.y << std::endl;
         // std::cout << lensNormal.z << std::endl;
 
-        float cosineThetaIncident = glm::dot(initialDirection, lensNormal);
+        float cosineThetaIncident = glm::dot(-initialDirection, lensNormal);
         float etaRatio =
             1.0 / lens.eta; // implicit assumption going from air to lens
 
@@ -145,7 +151,6 @@ computeLensAdjustedDirection(glm::vec3 initialDirection,
             etaRatio * etaRatio * sineSquaredThetaIncidentInitial;
         float cosineThetaTransmit = std::sqrt(1 - sineSquaredThetaIncidentAdjusted);
         // std::cout << "\nangles" << std::endl;
-
         // std::cout << cosineThetaIncident << std::endl;
         // std::cout << sineSquaredThetaIncidentInitial << std::endl;
         // std::cout << sineSquaredThetaIncidentAdjusted << std::endl;
@@ -164,7 +169,7 @@ std::tuple<glm::vec3, glm::vec3, bool>
 computeLensesAdjustedDirection(glm::vec3 initialDirection) {
     glm::vec3 currentDirection = initialDirection;
     glm::vec3 currentPosition = glm::vec3(0);
-    float cumulativeThickness = 0;
+    float cumulativeThickness = 0.f;
     for (lens_t &lens : lenses) {
         auto [nextDirection, nextPosition, stillInLens] =
             computeLensAdjustedDirection(currentDirection, currentPosition, lens,

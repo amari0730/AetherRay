@@ -27,8 +27,8 @@ void RayTracer::render(RGBA *imageData, const RayTraceScene &scene) {
     // using aspect ratio to get the width of the view plane
     float viewPlaneWidth = scene.getCamera().getAspectRatio() * viewPlaneHeight;
 
-    auto [newDirection, newPosition, isHere] =
-        computeLensesAdjustedDirection(glm::vec3(0.1, 0.1, 1));
+    // auto [newDirection, newPosition, isHere] =
+    //     computeLensesAdjustedDirection(glm::vec3(0.1, 0.1, 1));
     // std::cout << newDirection.x << std::endl;
     // std::cout << newDirection.y << std::endl;
     // std::cout << newDirection.z << std::endl;
@@ -53,16 +53,22 @@ void RayTracer::render(RGBA *imageData, const RayTraceScene &scene) {
             glm::vec4 uvk = glm::vec4(x, y, -k, 1);
             glm::vec4 eye = glm::vec4(0, 0, 0, 1);
             glm::vec4 direction = uvk - eye;
-
-            direction.z *= -1;
+            // if (j == scene.height() - 1)
+            //     std::cout << "NOW" << std::endl;
+            // std::cout << "\nx and y" << std::endl;
+            // std::cout << x << std::endl;
+            // std::cout << y << std::endl;
+            direction.z *= -1.f;
             auto [newDirection, newPosition, inLens] =
                 computeLensesAdjustedDirection(direction);
             // std::cout << inLens << std::endl;
             if (inLens) {
+
+
                 direction = glm::vec4(newDirection, 0);
-                direction.z *= -1;
+                direction.z *= -1.f;
                 eye = glm::vec4(newPosition, 1);
-                eye.z *= -1;
+                eye.z *= -1.f;
                 // transform the ray into world space from camera space
                 glm::vec4 transformedEye =
                     scene.getCamera().getViewMatrixInverse() * eye;
