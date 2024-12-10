@@ -51,6 +51,8 @@ add_executable(${PROJECT_NAME}
   src/singleraytrace/tracesingleray.h
   src/light/texturemap.h
   src/light/texturemap.cpp
+  src/lenses/lensassemblies.cpp
+  src/lenses/lenseassemblies.h
 )
 
 # GLM: this creates its library and allows you to `#include "glm/..."`

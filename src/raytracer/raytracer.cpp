@@ -1,5 +1,6 @@
 #include "raytracer.h"
 #include "../singleraytrace/tracesingleray.h"
+#include "lenses/lenseassemblies.h"
 #include "raytracescene.h"
 #include <cfloat>
 #include <cmath>
@@ -26,6 +27,17 @@ void RayTracer::render(RGBA *imageData, const RayTraceScene &scene) {
     // using aspect ratio to get the width of the view plane
     float viewPlaneWidth = scene.getCamera().getAspectRatio() * viewPlaneHeight;
 
+    auto [newDirection, newPosition, isHere] =
+        computeLensesAdjustedDirection(glm::vec3(0.1, 0.1, 1));
+    // std::cout << newDirection.x << std::endl;
+    // std::cout << newDirection.y << std::endl;
+    // std::cout << newDirection.z << std::endl;
+    // std::cout << "" << std::endl;
+    // std::cout << newPosition.x << std::endl;
+    // std::cout << newPosition.y << std::endl;
+    // std::cout << newPosition.z << std::endl;
+    // std::cout << "" << std::endl;
+
     // iterate through each pixel and trace a ray
     for (int j = 0; j < scene.height(); ++j) {
         for (int i = 0; i < scene.width(); ++i) {
@@ -42,16 +54,28 @@ void RayTracer::render(RGBA *imageData, const RayTraceScene &scene) {
             glm::vec4 eye = glm::vec4(0, 0, 0, 1);
             glm::vec4 direction = uvk - eye;
 
-            // transform the ra into world space from camera space
-            glm::vec4 transformedEye = scene.getCamera().getViewMatrixInverse() * eye;
-            // FIX FROM INTERSECT MENTOR MEETING: not truncating view matrix inverse
-            // here
-            glm::vec4 transformedD =
-                scene.getCamera().getViewMatrixInverse() * direction;
+            direction.z *= -1;
+            auto [newDirection, newPosition, inLens] =
+                computeLensesAdjustedDirection(direction);
+            // std::cout << inLens << std::endl;
+            if (inLens) {
+                direction = glm::vec4(newDirection, 0);
+                direction.z *= -1;
+                eye = glm::vec4(newPosition, 1);
+                eye.z *= -1;
+                // transform the ray into world space from camera space
+                glm::vec4 transformedEye =
+                    scene.getCamera().getViewMatrixInverse() * eye;
+                glm::vec4 transformedD =
+                    scene.getCamera().getViewMatrixInverse() * direction;
 
-            // trace the ray and set the correct image value
-            imageData[j * scene.width() + i] =
-                traceRay(transformedEye, transformedD, scene, m_config, 0);
+                // trace the ray and set the correct image value
+                imageData[j * scene.width() + i] =
+                    traceRay(transformedEye, transformedD, scene, m_config, 0);
+            } else {
+                // std::cout << "Here" << std::endl;
+                imageData[j * scene.width() + i] = RGBA{255, 255, 255};
+            }
         }
     }
 }
