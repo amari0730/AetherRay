@@ -1,8 +1,8 @@
-#include "../singleraytrace/tracesingleray.h"
-#include "../utils/scenedata.h"
 #include "../light/texturemap.h"
+#include "../singleraytrace/tracesingleray.h"
 #include "../utils/imagereader.h"
 #include "../utils/rgba.h"
+#include "../utils/scenedata.h"
 #include <cfloat>
 #include <cmath>
 #include <glm/glm.hpp>
@@ -72,16 +72,16 @@ SceneColor getTextureInterpolation(SceneMaterial &material,
     Image *imageToUse = loadedImages[material.textureMap.filename];
 
     // calculate c and r
-    // relevant algo section formula: c = floor(u * m * w) % w
+    // relevant formula: c = floor(u * m * w) % w
     int c = (int)(u * material.textureMap.repeatU * imageToUse->width) %
             imageToUse->width;
     // relevant algo section formula: check if c = m * w
     if (c == material.textureMap.repeatU * imageToUse->width)
         --c;
-    // relevant algo section formula: floor((1-v) * n * h) % h
+    // relevant formula: floor((1-v) * n * h) % h
     int r = (int)((1 - v) * material.textureMap.repeatV * imageToUse->height) %
             imageToUse->height;
-    // relevant algo section formula: check if r = n * h
+    // relevant formula: check if r = n * h
     if (r == material.textureMap.repeatV * imageToUse->height)
         --r;
 
@@ -112,16 +112,15 @@ SceneColor getTextureInterpolation(SceneMaterial &material,
  * given pathway already
  * @param shapeType: type of shape the light is being computed for
  * @param objectSpaceIntersection: intersection in object space
+ * @param time: with potential object movement
  * @return an RGBA value corrosponding to the color of the object to render
- *
- * citation: some of this code is copied from and/or directly inspired by my
- * code from Lab 6: Light
  */
 RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
            SceneMaterial &material, const std::vector<SceneLightData> &lights,
            const SceneGlobalData &globalData, const RayTraceScene &scene,
            const RayTracer::Config &config, int completedReflections,
-           PrimitiveType shapeType, glm::vec4 objectSpaceIntersection, double time) {
+           PrimitiveType shapeType, glm::vec4 objectSpaceIntersection,
+           double time) {
     // normalizing directions
     normal = glm::normalize(normal);
     directionToCamera = glm::normalize(directionToCamera);
@@ -150,7 +149,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             glm::vec4 directionToLight = glm::normalize(light.pos - position);
             if (config.enableShadow) {
                 // trace a shadow ray to determine possible intersection
-                float epsilon = pow(10, -1);
+                float epsilon = pow(10, -2);
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene, time);
             } else
@@ -191,7 +190,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             glm::vec4 directionToLight = glm::normalize(-light.dir);
             float minDistance;
             if (config.enableShadow) {
-                float epsilon = pow(10, -1);
+                float epsilon = pow(10, -2);
                 // trace a shadow ray to determine possible intersection
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene, time);
@@ -262,7 +261,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             float minDistance;
             if (config.enableShadow) {
                 // trace a shadow ray to determine possible intersection
-                float epsilon = pow(10, -1);
+                float epsilon = pow(10, -2);
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene, time);
             } else
@@ -302,16 +301,16 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
         completedReflections < config.maxRecursiveDepth &&
         (material.cReflective[0] != 0 || material.cReflective[1] != 0 ||
                                                                                        material.cReflective[2] != 0)) {
-        // calculate reflected ray (line copied from Lab 6: Light)
+        // calculate reflected ray
         glm::vec4 reflectedRay =
             2.f * glm::dot(directionToCamera, normal) * normal - directionToCamera;
 
         // calculate reflection through recursive raytracing, adding epsilon to
         // avoid self reflection
         float epsilon = pow(10, -1);
-        illumination +=
-            toIllumination(traceRay(position + reflectedRay * epsilon, reflectedRay,
-                                                scene, config, completedReflections + 1, time)) *
+        illumination += toIllumination(traceRay(position + reflectedRay * epsilon,
+                                                reflectedRay, scene, config,
+                                                completedReflections + 1, time)) *
                         globalData.ks * material.cReflective;
     }
 

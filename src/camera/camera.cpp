@@ -39,7 +39,7 @@ Camera::Camera(glm::vec4 pos, glm::vec4 look, glm::vec3 up, float aspectRatio,
     viewMatrix_ = mRotate * mTranslate;
     aspectRatio_ = aspectRatio;
     heightAngle_ = heightAngle;
-    // FIX FROM INTERSECT MENTOR MEETING: store inverse
+    // store inverse view matrix
     viewMatrixInverse_ = glm::inverse(viewMatrix_);
 }
 
@@ -53,10 +53,7 @@ glm::mat4 Camera::getViewMatrix() const { return viewMatrix_; }
  * @brief Camera::getViewMatrixInverse: getter for the inverseViewMatrix_ field
  * @return the viewMatrixInverse_ field of the class
  */
-glm::mat4 Camera::getViewMatrixInverse() const {
-    // FIX FROM INTERSECT MENTOR MEETING: store inverse
-    return viewMatrixInverse_;
-}
+glm::mat4 Camera::getViewMatrixInverse() const { return viewMatrixInverse_; }
 
 /**
  * @brief Camera::getAspectRatio: getter for the aspectRatio_ field

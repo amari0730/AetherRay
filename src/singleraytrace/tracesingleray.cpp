@@ -1,18 +1,17 @@
 #include "tracesingleray.h"
 #include "../light/lighting.h"
-#include "../shapes/shapeoverall.h"
+#include "../raytracer/raytracescene.h"
 #include "../shapes/cone.h"
 #include "../shapes/cube.h"
 #include "../shapes/cylinder.h"
+#include "../shapes/shapeoverall.h"
 #include "../shapes/sphere.h"
 #include "../utils/scenedata.h"
-#include "../raytracer/raytracescene.h"
 #include <cfloat>
 #include <cmath>
 #include <functional>
 #include <glm/glm.hpp>
 #include <iostream>
-
 
 /**
  * @brief traceRay: traces a single ray and tracks intersections with implicitly
@@ -23,6 +22,7 @@
  * @param config: configuration of the raytracer
  * @param completedReflections: how many reflections the current ray has already
  * undergone
+ * @param time: with potential object movement
  * @return the color in the scene that the ray hits
  */
 RGBA traceRay(glm::vec4 position, glm::vec4 direction,
@@ -71,11 +71,16 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
             break;
         }
         case PrimitiveType::PRIMITIVE_SPHERE_MOVING: {
-            potentialMinT = movingSphereIntersect(objectPosition, objectDirection, time, primitiveShape.primitive.center2).getIntersection();
+            potentialMinT =
+                movingSphereIntersect(objectPosition, objectDirection, time,
+                                                  primitiveShape.primitive.center2)
+                                .getIntersection();
             break;
         }
         case PrimitiveType::PRIMITIVE_CUBE_MOVING: {
-            potentialMinT = movingCubeIntersect(objectPosition, objectDirection, time, primitiveShape.primitive.center2).getIntersection();
+            potentialMinT = movingCubeIntersect(objectPosition, objectDirection, time,
+                                                primitiveShape.primitive.center2)
+                                .getIntersection();
             break;
         }
         case PrimitiveType::PRIMITIVE_MESH:
@@ -91,10 +96,14 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
             minTType = primitiveShape.primitive.type;
             minTMaterial = primitiveShape.primitive.material;
             inverseMinTCTM = primitiveShape.inverseCTM;
-            if (PrimitiveType::PRIMITIVE_SPHERE_MOVING == primitiveShape.primitive.type ||
-                PrimitiveType::PRIMITIVE_CUBE_MOVING == primitiveShape.primitive.type ||
-                PrimitiveType::PRIMITIVE_CONE_MOVING == primitiveShape.primitive.type ||
-                PrimitiveType::PRIMITIVE_CYLINDER_MOVING == primitiveShape.primitive.type) {
+            if (PrimitiveType::PRIMITIVE_SPHERE_MOVING ==
+                    primitiveShape.primitive.type ||
+                PrimitiveType::PRIMITIVE_CUBE_MOVING ==
+                                                                                               primitiveShape.primitive.type ||
+                PrimitiveType::PRIMITIVE_CONE_MOVING ==
+                                                                                                                                                                        primitiveShape.primitive.type ||
+                PrimitiveType::PRIMITIVE_CYLINDER_MOVING ==
+                                                                                                                                                                                                                                                 primitiveShape.primitive.type) {
                 min_center2 = primitiveShape.primitive.center2;
             }
         }
@@ -103,8 +112,6 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
     // if an object was hit, do the lighting computation
     if (hitObject) {
         // get object position and direction
-        // TODO: store inverse of the CTM
-        // TODO: store inverse of the view matrix
         glm::vec4 objectNormal;
         glm::vec4 objectPosition = inverseMinTCTM * position;
         glm::vec4 objectDirection = inverseMinTCTM * direction;
@@ -132,14 +139,25 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
             break;
         }
         case PrimitiveType::PRIMITIVE_SPHERE_MOVING: {
-            objectNormal = movingSphereNormal((objectPosition + minT * objectDirection), time, min_center2).getObjectNormal();
+            objectNormal =
+                movingSphereNormal((objectPosition + minT * objectDirection), time,
+                                              min_center2)
+                               .getObjectNormal();
             break;
         }
         case PrimitiveType::PRIMITIVE_CUBE_MOVING: {
-            objectNormal = movingCubeNormal((objectPosition + minT * objectDirection), time, min_center2).getObjectNormal();
+            objectNormal = movingCubeNormal((objectPosition + minT * objectDirection),
+                                            time, min_center2)
+                               .getObjectNormal();
             break;
         }
         case PrimitiveType::PRIMITIVE_MESH:
+            // unimplemented
+            break;
+        case PrimitiveType::PRIMITIVE_CONE_MOVING:
+            // unimplemented
+            break;
+        case PrimitiveType::PRIMITIVE_CYLINDER_MOVING:
             // unimplemented
             break;
         }
@@ -157,7 +175,6 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
                               minTMaterial, scene.getLights(), scene.getGlobalData(), scene,
                               config, completedReflections, minTType,
                               objectPosition + minT * objectDirection, time);
-
     }
 
     // return the color hit by the ray
@@ -170,7 +187,8 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
  * @param position: starting position of the ray
  * @param direction: direction of the ray
  * @param scene: information about the scene
- * @return the color in the scene that the ray hits
+ * @param time: with potential object movement
+ * @return the distance of the closest object from the current one
  */
 float traceShadowRay(glm::vec4 position, glm::vec4 direction,
                      const RayTraceScene &scene, double time) {
@@ -209,11 +227,16 @@ float traceShadowRay(glm::vec4 position, glm::vec4 direction,
             break;
         }
         case PrimitiveType::PRIMITIVE_SPHERE_MOVING: {
-            potentialMinT = movingSphereIntersect(objectPosition, objectDirection, time, primitiveShape.primitive.center2).getIntersection();
+            potentialMinT =
+                movingSphereIntersect(objectPosition, objectDirection, time,
+                                                  primitiveShape.primitive.center2)
+                                .getIntersection();
             break;
         }
         case PrimitiveType::PRIMITIVE_CUBE_MOVING: {
-            potentialMinT = movingCubeIntersect(objectPosition, objectDirection, time, primitiveShape.primitive.center2).getIntersection();
+            potentialMinT = movingCubeIntersect(objectPosition, objectDirection, time,
+                                                primitiveShape.primitive.center2)
+                                .getIntersection();
             break;
         }
         case PrimitiveType::PRIMITIVE_MESH:

@@ -69,7 +69,7 @@ for frame in range(0, 11):
     )
     cur_lines[2] = (
         # " output = /Users/mohammadhijaz/Desktop/cs-1230/final-project/outputFrames/"
-        " output = /Users/davideskilson/other/browncs/CSCI-1230/final-project/AetherRay/jsonFrames/"
+        " output = /Users/davideskilson/other/browncs/CSCI-1230/final-project/AetherRay/outputFrames/"
         + "frame"
         + str(frame)
         + ".png"
