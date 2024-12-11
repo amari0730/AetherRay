@@ -1,5 +1,3 @@
-# AetherRay
-
 <a name="readme-top"></a>
 
 # AetherRay
