@@ -21,14 +21,14 @@ if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "cygwin" ]] || [[ "$OSTYPE" == "
   export PATH="$QT_BIN_DIR:$PATH"
 fi
 
-BUILD_PROJECT_DIR=$(find build -type d -name "build-projects-*-Release" -print -quit)
+BUILD_PROJECT_DIR=$(find build -type d -name "build-project-*-Release" -print -quit)
 
 if [ -z "$BUILD_PROJECT_DIR" ]; then
   echo "Error: Build directory for the project not found."
   exit 1
 fi
 
-EXECUTABLE_PATH="$BUILD_PROJECT_DIR/projects_ray"
+EXECUTABLE_PATH="$BUILD_PROJECT_DIR/project_aether_ray"
 INI_FILE="template_inis/intersect/unit_cylinder.ini"
 
 for INI_FILE in template_inis/illuminate/*.ini; do

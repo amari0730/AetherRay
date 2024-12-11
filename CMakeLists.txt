@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Sets project name
-project(projects_ray LANGUAGES CXX)
+project(project_aether_ray LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
