@@ -147,12 +147,7 @@ struct SceneMaterial {
 };
 
 // Struct which contains data for a single primitive in a scene
-struct ScenePrimitive {
-    PrimitiveType type;
-    SceneMaterial material;
-    std::string meshfile; // Used for triangle meshes
-    glm::vec3 center2;
-};
+
 
 // Struct which contains data for a transformation.
 struct SceneTransformation {
@@ -164,6 +159,12 @@ struct SceneTransformation {
     float angle;         // Only applicable when rotating.    Defines the angle to rotate by in RADIANS, following the right-hand rule.
     glm::mat4 matrix;    // Only applicable when transforming by a custom matrix. This is that custom matrix.
 };
+struct ScenePrimitive {
+    PrimitiveType type;
+    SceneMaterial material;
+    std::string meshfile; // Used for triangle meshes
+    glm::vec3 center2;
+};
 
 // Struct which represents a node in the scene graph/tree, to be parsed by the student's `SceneParser`.
 struct SceneNode {
@@ -172,3 +173,4 @@ struct SceneNode {
     std::vector<SceneLight*> lights;
     std::vector<SceneNode*> children;
 };
+
