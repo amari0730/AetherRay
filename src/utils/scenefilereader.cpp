@@ -204,7 +204,7 @@ bool ScenefileReader::parseGlobalData(const QJsonObject &globalData) {
  */
 bool ScenefileReader::parseLightData(const QJsonObject &lightData, SceneNode *node) {
     QStringList requiredFields = {"type", "color"};
-    QStringList optionalFields = {"name", "attenuationCoeff", "direction", "penumbra", "angle"};
+    QStringList optionalFields = {"name", "attenuationCoeff", "direction", "penumbra", "angle", "length", "width", "height", "uvec", "vvec"};
     QStringList allFields = requiredFields + optionalFields;
     for (auto &field : lightData.keys()) {
         if (!allFields.contains(field)) {
@@ -251,7 +251,7 @@ bool ScenefileReader::parseLightData(const QJsonObject &lightData, SceneNode *no
         return false;
     }
     std::string lightType = lightData["type"].toString().toStdString();
-
+    std::cout<< lightType <<std::endl;
     // parse directional light
     if (lightType == "directional") {
         light->type = LightType::LIGHT_DIRECTIONAL;
@@ -302,6 +302,82 @@ bool ScenefileReader::parseLightData(const QJsonObject &lightData, SceneNode *no
         light->function.x = attenuationArray[0].toDouble();
         light->function.y = attenuationArray[1].toDouble();
         light->function.z = attenuationArray[2].toDouble();
+    }
+    else if (lightType == "area") {
+        light->type = LightType::LIGHT_AREA;
+
+        // parse the attenuation coefficient
+        if (!lightData.contains("attenuationCoeff")) {
+            std::cout << "area light must contain field \"attenuationCoeff\"" << std::endl;
+            return false;
+        }
+        if (!lightData["attenuationCoeff"].isArray()) {
+            std::cout << "area light attenuationCoeff must be of type array" << std::endl;
+            return false;
+        }
+        QJsonArray attenuationArray = lightData["attenuationCoeff"].toArray();
+        if (attenuationArray.size() != 3) {
+            std::cout << "area light attenuationCoeff must be of size 3" << std::endl;
+            return false;
+        }
+        if (!lightData.contains("uvec")) {
+            std::cout << "area light must contain field \"uvec\"" << std::endl;
+            return false;
+        }
+        if (!lightData["uvec"].isArray()) {
+            std::cout << "area light uvec must be of type array" << std::endl;
+            return false;
+        }
+        QJsonArray uVecArray = lightData["uvec"].toArray();
+
+        if (uVecArray.size() != 3) {
+            std::cout << "area light attenuationCoeff must be of size 3" << std::endl;
+            return false;
+        }
+
+        if (!lightData.contains("vvec")) {
+            std::cout << "area light must contain field \"uvec\"" << std::endl;
+            return false;
+        }
+        if (!lightData["vvec"].isArray()) {
+            std::cout << "area light uvec must be of type array" << std::endl;
+            return false;
+        }
+        QJsonArray vVecArray = lightData["vvec"].toArray();
+
+        if (vVecArray.size() != 3) {
+            std::cout << "area light attenuationCoeff must be of size 3" << std::endl;
+            return false;
+        }
+
+
+
+        if (!lightData.contains("height")) {
+            std::cout << "area light length must be provided" << std::endl;
+            return false;
+        }
+        light->height = lightData["height"].toDouble();
+
+        if (!lightData.contains("width")) {
+            std::cout << "area light width must be provided" << std::endl;
+            return false;
+        }
+        light->width = lightData["width"].toDouble();
+
+        light->function.x = attenuationArray[0].toDouble();
+        light->function.y = attenuationArray[1].toDouble();
+        light->function.z = attenuationArray[2].toDouble();
+
+        light->uvec.x = uVecArray[0].toDouble();
+        light->uvec.y = 100;
+        light->uvec.z = uVecArray[2].toDouble();
+
+        light->vvec.x = vVecArray[0].toDouble();
+        light->vvec.y = vVecArray[1].toDouble();
+        light->vvec.z = vVecArray[2].toDouble();
+
+
+
     }
     else if (lightType == "spot") {
         QStringList pointRequiredFields = {"direction", "penumbra", "angle", "attenuationCoeff"};

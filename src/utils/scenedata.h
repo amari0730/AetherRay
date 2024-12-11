@@ -10,6 +10,7 @@ enum class LightType {
     LIGHT_POINT,
     LIGHT_DIRECTIONAL,
     LIGHT_SPOT,
+    LIGHT_AREA,
 };
 
 // Enum of the types of primitives that might be in the scene
@@ -54,6 +55,9 @@ struct SceneLight {
     float angle;    // Only applicable to spot lights, in RADIANS
 
     float width, height; // No longer supported (area lights)
+    glm::vec3 uvec;
+    glm::vec3 vvec;
+
 };
 
 // Struct which contains data for a single light with CTM applied
@@ -70,7 +74,9 @@ struct SceneLightData {
     float penumbra; // Only applicable to spot lights, in RADIANS
     float angle;    // Only applicable to spot lights, in RADIANS
 
-    float width, height; // No longer supported (area lights)
+    float width, height;
+    glm::vec3 uvec;
+    glm::vec3 vvec;
 };
 
 // Struct which contains data for the camera of a scene

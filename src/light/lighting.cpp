@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <map>
-
+#include <iostream>
 /**
  * @brief loadedImages: map to store pointers to already loaded textures to
  * avoid having to reload the files
@@ -96,6 +96,10 @@ SceneColor getTextureInterpolation(SceneMaterial &material,
     return linearInterpolation;
 }
 
+auto point_on_light(glm::vec3 corner, glm::vec3 uvec, glm::vec3 vvec, int u, int v) {
+    return corner + uvec * (u + 0.5f) + vvec * (v + 0.5f);
+}
+
 /**
  * @brief phong: computes the pixel color to render based on the Phone Lighting
  * Model
@@ -136,6 +140,75 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
     // iterate through each of the lights
     for (const SceneLightData &light : lights) {
         switch (light.type) {
+        case LightType::LIGHT_AREA: {
+            float total = 0;
+            float usteps = 6;
+            float vsteps = 6;
+            glm::vec4 areaIllumination(0, 0, 0, 1);
+            glm::vec3 corner = light.pos;
+
+            // Size of each grid cell
+            float uStepSize = light.width / usteps;
+            float vStepSize = light.height / vsteps;
+
+            for (int i = 0; i < usteps; i++) {
+                for (int j = 0; j < vsteps; j++) {
+                    // Adjust the corner for the current grid cell
+                    glm::vec3 adjustedCorner = corner + (i * uStepSize) + (j * vStepSize);
+
+                    // Randomize point within the grid cell
+                    float randomU = static_cast<float>(std::rand()) / RAND_MAX;
+                    float randomV = static_cast<float>(std::rand()) / RAND_MAX;
+
+                    // Compute offsets for the randomized position
+                    float uOffset = randomU * uStepSize;
+                    float vOffset = randomV * vStepSize;
+
+                    // Calculate the sample point on the area light
+                    glm::vec4 samplePoint = glm::vec4(
+                        adjustedCorner + (uOffset * light.uvec) + (vOffset * light.vvec),
+                        1
+                        );
+
+                    // Compute direction and distance to light
+                    glm::vec4 directionToSample = glm::normalize(samplePoint - position);
+                    float distance = glm::length(samplePoint - position);
+                    float fAtt = 1.0f / (light.function[0] + light.function[1] * distance + light.function[2] * distance * distance);
+
+                    // Shadow check
+                    float minDistance = -1.f;
+                    if (config.enableShadow) {
+                        float epsilon = 1e-4f;
+                        minDistance = traceShadowRay(position + epsilon * directionToSample, directionToSample, scene);
+                    }
+
+                    // Diffuse term
+                    float dotProductLambert = glm::dot(directionToSample, normal);
+                    if (dotProductLambert > 0 && (minDistance > distance || minDistance == -1.f)) {
+                        total += 1.f;
+                        if (config.enableTextureMap && material.blend > 0) {
+                            SceneColor linearInterpolation = getTextureInterpolation(
+                                material, globalData, shapeType, objectSpaceIntersection);
+                            areaIllumination += light.color * fAtt * linearInterpolation * dotProductLambert;
+                        } else {
+                            areaIllumination += fAtt * light.color * globalData.kd * material.cDiffuse * dotProductLambert;
+                        }
+                    }
+
+                    // Specular term
+                    glm::vec4 R = glm::reflect(-directionToSample, normal);
+                    float dotProductSpecular = glm::dot(R, directionToCamera);
+                    if (dotProductLambert > 0 && (minDistance > distance || minDistance == -1.f)) {
+                        areaIllumination += fAtt * light.color * globalData.ks * material.cSpecular * (float)pow(dotProductSpecular, material.shininess);
+                    }
+                }
+            }
+
+            illumination += areaIllumination * (total / (usteps * vsteps));
+
+            break;
+        }
+
         case LightType::LIGHT_POINT: {
             // get distance
             float distanceToLight = glm::length(light.pos - position);
@@ -295,7 +368,10 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             }
             break;
         }
-    }
+
+        }
+
+
 
     // add potential reflective component
     if (config.enableReflection &&
