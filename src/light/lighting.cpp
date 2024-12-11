@@ -9,7 +9,9 @@
 #include <cfloat>
 #include <cmath>
 #include <glm/glm.hpp>
+#include <iostream>
 #include <map>
+#include <ostream>
 
 /**
  * @brief loadedImages: map to store pointers to already loaded textures to
@@ -269,6 +271,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
         case LightType::LIGHT_DIRECTIONAL: {
             // compute the attenuation factor (just 1 for directional lights)
             float fAtt = 1.f;
+            // std::cout << "here" << std::endl;
 
             // check for shadows
             glm::vec4 directionToLight = glm::normalize(-light.dir);
@@ -285,8 +288,10 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             float dotProductLambert = glm::dot(directionToLight, normal);
             // equation: kd * Od * (N \cdot L)
             if (dotProductLambert > 0 && minDistance == -1.f) {
+                // std::cout << material.blend << std::endl;
                 if (config.enableTextureMap &&
                     material.blend > 0) { // complete texture mapping
+
                     // add interpolated color to the output
                     SceneColor linearInterpolation = getTextureInterpolation(
                         material, globalData, shapeType, objectSpaceIntersection);
