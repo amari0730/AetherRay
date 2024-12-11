@@ -1,0 +1,44 @@
+{
+    "globalData": {
+    "ambientCoeff": 0.5,
+    "diffuseCoeff": 0.5,
+    "specularCoeff": 0.5,
+    "transparentCoeff": 1
+  },
+  "cameraData": {
+    "position": [5, 1, 5],
+    "up": [0, 1, 0],
+    "heightAngle": 30,
+    "look": [-1, 0, -1]
+  },
+  "groups": [
+    {
+      "name": "Lights",
+      "lights": [
+        {
+          "color": [1, 0, 0],
+          "type": "area",
+          "direction": [0, -0.2, -1],
+          "width": 16,
+          "height": 16,
+          "attenuationCoeff": [0.8, 0.2, 0.0],
+          "vvec": [4,0,0],
+          "uvec": [0,4,0]
+        }
+      ]
+    },
+    {
+      "name": "Sphere",
+      "translate": [1.5, 0, -1.5],
+      "primitives": [
+        {
+          "type": "sphere",
+          "ambient": [1, 0, 0],
+          "diffuse": [0, 0, 0],
+          "shininess": 30,
+          "specular": [1, 1, 1]
+        }
+      ]
+    }
+  ]
+}

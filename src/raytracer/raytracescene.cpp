@@ -1,5 +1,9 @@
 #include "raytracescene.h"
+<<<<<<< HEAD
+#include "utils/sceneparser.h"
+=======
 #include "../utils/sceneparser.h"
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 #include <iostream>
 #include <stdexcept>
 

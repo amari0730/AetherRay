@@ -14,12 +14,26 @@
   },
   "groups": [
     {
+<<<<<<< HEAD
+      "name": "Lights",
+      "lights": [
+        {
+          "color": [1, 0, 0],
+          "type": "area",
+          "direction": [0, -0.2, -1],
+          "width": 16,
+          "height": 16,
+          "attenuationCoeff": [0.8, 0.2, 0.0],
+          "vvec": [4, 0, 0],
+          "uvec": [0, 4, 0]
+=======
       "translate": [0.0, 3.0, 0.0],
       "lights": [
         {
           "type": "point",
           "color": [0.9, 0.2, 0.2],
           "attenuationCoeff": [0.8, 0.2, 0]
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
         }
       ]
     },
@@ -27,9 +41,20 @@
       "translate": [0.0, 2.0, 1.0],
       "lights": [
         {
+<<<<<<< HEAD
+          "color": [0, 1, 0],
+          "type": "area",
+          "direction": [0, -0.2, -1],
+          "width": 16,
+          "height": 16,
+          "attenuationCoeff": [0.8, 0.2, 0.0],
+          "vvec": [4, 0, 0],
+          "uvec": [0, 4, 0]
+=======
           "type": "point",
           "color": [0.2, 0.9, 0.2],
           "attenuationCoeff": [1, 0, 0]
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
         }
       ]
     },
@@ -44,6 +69,58 @@
       ]
     },
     {
+<<<<<<< HEAD
+      "translate": [-0.65, 0.0, 0.65],
+      "primitives": [
+        {
+          "type": "cylinder",
+          "diffuse": [0.8, 0.6, 0.6],
+          "specular": [1.0, 1.0, 1.0],
+          "shininess": 15.0
+        }
+      ]
+    },
+    {
+      "translate": [-0.65, 0.0, -0.65],
+      "primitives": [
+        {
+          "type": "cone",
+          "diffuse": [0.6, 0.6, 0.8],
+          "specular": [1.0, 1.0, 1.0],
+          "shininess": 15.0
+        }
+      ]
+    },
+    {
+      "translate": [0.65, 0.0, -0.65],
+      "primitives": [
+        {
+          "type": "sphere",
+          "diffuse": [0.6, 0.8, 0.6],
+          "specular": [1.0, 1.0, 1.0],
+          "shininess": 15.0
+        }
+      ]
+    },
+    {
+      "translate": [0.65, 0.0, 0.65],
+      "primitives": [
+        {
+          "type": "cube",
+          "diffuse": [0.7, 0.7, 0.7],
+          "specular": [1.0, 1.0, 1.0],
+          "shininess": 15.0
+        }
+      ]
+    },
+    {
+      "translate": [0.0, -0.6, 0.0],
+      "scale": [6.0, 0.1, 6.0],
+      "primitives": [
+        {
+          "type": "cube",
+          "diffuse": [0.1, 0.4, 0.8]
+=======
       "groups": [
         {
           "translate": [-0.65, 0.0, 0.65],
@@ -98,6 +175,7 @@
               "diffuse": [0.1, 0.4, 0.8]
             }
           ]
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
         }
       ]
     }

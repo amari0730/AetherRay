@@ -10,6 +10,10 @@ enum class LightType {
     LIGHT_POINT,
     LIGHT_DIRECTIONAL,
     LIGHT_SPOT,
+<<<<<<< HEAD
+    LIGHT_AREA,
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Enum of the types of primitives that might be in the scene
@@ -18,11 +22,15 @@ enum class PrimitiveType {
     PRIMITIVE_CONE,
     PRIMITIVE_CYLINDER,
     PRIMITIVE_SPHERE,
+<<<<<<< HEAD
+    PRIMITIVE_MESH
+=======
     PRIMITIVE_MESH,
     PRIMITIVE_SPHERE_MOVING,
     PRIMITIVE_CUBE_MOVING,
     PRIMITIVE_CONE_MOVING,
     PRIMITIVE_CYLINDER_MOVING
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Enum of the types of transformations that can be applied
@@ -58,6 +66,12 @@ struct SceneLight {
     float angle;    // Only applicable to spot lights, in RADIANS
 
     float width, height; // No longer supported (area lights)
+<<<<<<< HEAD
+    glm::vec3 uvec;
+    glm::vec3 vvec;
+
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Struct which contains data for a single light with CTM applied
@@ -74,7 +88,13 @@ struct SceneLightData {
     float penumbra; // Only applicable to spot lights, in RADIANS
     float angle;    // Only applicable to spot lights, in RADIANS
 
+<<<<<<< HEAD
+    float width, height;
+    glm::vec3 uvec;
+    glm::vec3 vvec;
+=======
     float width, height; // No longer supported (area lights)
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Struct which contains data for the camera of a scene
@@ -147,7 +167,15 @@ struct SceneMaterial {
 };
 
 // Struct which contains data for a single primitive in a scene
+<<<<<<< HEAD
+struct ScenePrimitive {
+    PrimitiveType type;
+    SceneMaterial material;
+    std::string meshfile; // Used for triangle meshes
+};
+=======
 
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
 // Struct which contains data for a transformation.
 struct SceneTransformation {
@@ -159,12 +187,15 @@ struct SceneTransformation {
     float angle;         // Only applicable when rotating.    Defines the angle to rotate by in RADIANS, following the right-hand rule.
     glm::mat4 matrix;    // Only applicable when transforming by a custom matrix. This is that custom matrix.
 };
+<<<<<<< HEAD
+=======
 struct ScenePrimitive {
     PrimitiveType type;
     SceneMaterial material;
     std::string meshfile; // Used for triangle meshes
     glm::vec3 center2;
 };
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
 // Struct which represents a node in the scene graph/tree, to be parsed by the student's `SceneParser`.
 struct SceneNode {
@@ -173,4 +204,7 @@ struct SceneNode {
     std::vector<SceneLight*> lights;
     std::vector<SceneNode*> children;
 };
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e

@@ -1,14 +1,32 @@
+<<<<<<< HEAD
+=======
+#include "../singleraytrace/tracesingleray.h"
+#include "../utils/scenedata.h"
+<<<<<<< HEAD
+#include "light/texturemap.h"
+#include "utils/imagereader.h"
+#include "utils/rgba.h"
+=======
+>>>>>>> refs/remotes/origin/main
 #include "../light/texturemap.h"
 #include "../singleraytrace/tracesingleray.h"
 #include "../utils/imagereader.h"
 #include "../utils/rgba.h"
+<<<<<<< HEAD
 #include "../utils/scenedata.h"
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
+>>>>>>> refs/remotes/origin/main
 #include <cfloat>
 #include <cmath>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <map>
+<<<<<<< HEAD
+#include <iostream>
+=======
 
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 /**
  * @brief loadedImages: map to store pointers to already loaded textures to
  * avoid having to reload the files
@@ -96,6 +114,13 @@ SceneColor getTextureInterpolation(SceneMaterial &material,
     return linearInterpolation;
 }
 
+<<<<<<< HEAD
+auto point_on_light(glm::vec3 corner, glm::vec3 uvec, glm::vec3 vvec, int u, int v) {
+    return corner + uvec * (u + 0.5f) + vvec * (v + 0.5f);
+}
+
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 /**
  * @brief phong: computes the pixel color to render based on the Phone Lighting
  * Model
@@ -119,8 +144,16 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
            SceneMaterial &material, const std::vector<SceneLightData> &lights,
            const SceneGlobalData &globalData, const RayTraceScene &scene,
            const RayTracer::Config &config, int completedReflections,
+<<<<<<< HEAD
            PrimitiveType shapeType, glm::vec4 objectSpaceIntersection,
            double time) {
+=======
+<<<<<<< HEAD
+           PrimitiveType shapeType, glm::vec4 objectSpaceIntersection) {
+=======
+           PrimitiveType shapeType, glm::vec4 objectSpaceIntersection, double time) {
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
+>>>>>>> refs/remotes/origin/main
     // normalizing directions
     normal = glm::normalize(normal);
     directionToCamera = glm::normalize(directionToCamera);
@@ -135,6 +168,78 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
     // iterate through each of the lights
     for (const SceneLightData &light : lights) {
         switch (light.type) {
+<<<<<<< HEAD
+        case LightType::LIGHT_AREA: {
+            float total = 0;
+            float usteps = 6;
+            float vsteps = 6;
+            glm::vec4 areaIllumination(0, 0, 0, 1);
+            glm::vec3 corner = light.pos;
+
+            // Size of each grid cell
+            float uStepSize = light.width / usteps;
+            float vStepSize = light.height / vsteps;
+
+            for (int i = 0; i < usteps; i++) {
+                for (int j = 0; j < vsteps; j++) {
+                    // Adjust the corner for the current grid cell
+                    glm::vec3 adjustedCorner = corner + (i * uStepSize) + (j * vStepSize);
+
+                    // Randomize point within the grid cell
+                    float randomU = static_cast<float>(std::rand()) / RAND_MAX;
+                    float randomV = static_cast<float>(std::rand()) / RAND_MAX;
+
+                    // Compute offsets for the randomized position
+                    float uOffset = randomU * uStepSize;
+                    float vOffset = randomV * vStepSize;
+
+                    // Calculate the sample point on the area light
+                    glm::vec4 samplePoint = glm::vec4(
+                        adjustedCorner + (uOffset * light.uvec) + (vOffset * light.vvec),
+                        1
+                        );
+
+                    // Compute direction and distance to light
+                    glm::vec4 directionToSample = glm::normalize(samplePoint - position);
+                    float distance = glm::length(samplePoint - position);
+                    float fAtt = 1.0f / (light.function[0] + light.function[1] * distance + light.function[2] * distance * distance);
+
+                    // Shadow check
+                    float minDistance = -1.f;
+                    if (config.enableShadow) {
+                        float epsilon = 1e-4f;
+                        minDistance = traceShadowRay(position + epsilon * directionToSample, directionToSample, scene);
+                    }
+
+                    // Diffuse term
+                    float dotProductLambert = glm::dot(directionToSample, normal);
+                    if (dotProductLambert > 0 && (minDistance > distance || minDistance == -1.f)) {
+                        total += 1.f;
+                        if (config.enableTextureMap && material.blend > 0) {
+                            SceneColor linearInterpolation = getTextureInterpolation(
+                                material, globalData, shapeType, objectSpaceIntersection);
+                            areaIllumination += light.color * fAtt * linearInterpolation * dotProductLambert;
+                        } else {
+                            areaIllumination += fAtt * light.color * globalData.kd * material.cDiffuse * dotProductLambert;
+                        }
+                    }
+
+                    // Specular term
+                    glm::vec4 R = glm::reflect(-directionToSample, normal);
+                    float dotProductSpecular = glm::dot(R, directionToCamera);
+                    if (dotProductLambert > 0 && (minDistance > distance || minDistance == -1.f)) {
+                        areaIllumination += fAtt * light.color * globalData.ks * material.cSpecular * (float)pow(dotProductSpecular, material.shininess);
+                    }
+                }
+            }
+
+            illumination += areaIllumination * (total / (usteps * vsteps));
+
+            break;
+        }
+
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
         case LightType::LIGHT_POINT: {
             // get distance
             float distanceToLight = glm::length(light.pos - position);
@@ -149,9 +254,19 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             glm::vec4 directionToLight = glm::normalize(light.pos - position);
             if (config.enableShadow) {
                 // trace a shadow ray to determine possible intersection
+<<<<<<< HEAD
                 float epsilon = pow(10, -2);
+=======
+<<<<<<< HEAD
+                float epsilon = pow(10, -4);
+                minDistance = traceShadowRay(position + epsilon * directionToLight,
+                                             directionToLight, scene);
+=======
+                float epsilon = pow(10, -1);
+>>>>>>> refs/remotes/origin/main
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene, time);
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
             } else
                 minDistance = -1.f;
 
@@ -190,10 +305,21 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             glm::vec4 directionToLight = glm::normalize(-light.dir);
             float minDistance;
             if (config.enableShadow) {
+<<<<<<< HEAD
                 float epsilon = pow(10, -2);
+=======
+<<<<<<< HEAD
+                float epsilon = pow(10, -4);
+                // trace a shadow ray to determine possible intersection
+                minDistance = traceShadowRay(position + epsilon * directionToLight,
+                                             directionToLight, scene);
+=======
+                float epsilon = pow(10, -1);
+>>>>>>> refs/remotes/origin/main
                 // trace a shadow ray to determine possible intersection
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene, time);
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
             } else
                 minDistance = -1;
 
@@ -261,9 +387,19 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             float minDistance;
             if (config.enableShadow) {
                 // trace a shadow ray to determine possible intersection
+<<<<<<< HEAD
                 float epsilon = pow(10, -2);
+=======
+<<<<<<< HEAD
+                float epsilon = pow(10, -4);
+                minDistance = traceShadowRay(position + epsilon * directionToLight,
+                                             directionToLight, scene);
+=======
+                float epsilon = pow(10, -1);
+>>>>>>> refs/remotes/origin/main
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene, time);
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
             } else
                 minDistance = -1;
 
@@ -294,7 +430,14 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             }
             break;
         }
+<<<<<<< HEAD
+
+        }
+
+
+=======
     }
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
     // add potential reflective component
     if (config.enableReflection &&
@@ -308,9 +451,19 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
         // calculate reflection through recursive raytracing, adding epsilon to
         // avoid self reflection
         float epsilon = pow(10, -1);
+<<<<<<< HEAD
         illumination += toIllumination(traceRay(position + reflectedRay * epsilon,
                                                 reflectedRay, scene, config,
                                                 completedReflections + 1, time)) *
+=======
+        illumination +=
+            toIllumination(traceRay(position + reflectedRay * epsilon, reflectedRay,
+<<<<<<< HEAD
+                                                scene, config, completedReflections + 1)) *
+=======
+                                                scene, config, completedReflections + 1, time)) *
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
+>>>>>>> refs/remotes/origin/main
                         globalData.ks * material.cReflective;
     }
 

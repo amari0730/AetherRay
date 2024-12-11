@@ -36,8 +36,11 @@ void dfsBuild(SceneNode *node, glm::mat4 CTM, RenderData &renderData) {
 
     // iterate through scene primitives and record their CTM values
     for (ScenePrimitive *primitive : node->primitives) {
+<<<<<<< HEAD
+=======
 
         // primitive->type = PrimitiveType::PRIMITIVE_SPHERE_MOVING;
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
         renderData.shapes.push_back(
             RenderShapeData{*primitive, newCTM, glm::inverse(newCTM)});
     }

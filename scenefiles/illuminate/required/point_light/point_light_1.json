@@ -13,6 +13,24 @@
     "heightAngle": 30.0
   },
   "groups": [
+<<<<<<< HEAD
+      {
+        "translate": [-5.0, 5.0, 0.0],
+        "name": "Lights",
+        "lights": [
+          {
+            "color": [1, 0, 0],
+            "type": "area",
+            "direction": [0, -0.2, -1],
+            "width": 16,
+            "height": 16,
+            "attenuationCoeff": [0.8, 0.2, 0.0],
+            "vvec": [50.0, 0.0, 0.0],
+            "uvec": [0.0, 50.0, 0.0]
+          }
+        ]
+      },
+=======
     {
       "translate": [0, 3, 0],
       "lights": [
@@ -23,6 +41,7 @@
         }
       ]
     },
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
     {
       "groups": [
         {
