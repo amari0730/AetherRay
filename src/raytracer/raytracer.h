@@ -1,7 +1,12 @@
 #pragma once
 
 #include <glm/glm.hpp>
+<<<<<<< HEAD
 #include "utils/rgba.h"
+=======
+#include "../utils/rgba.h"
+#include <random>
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
 // A forward declaration for the RaytraceScene class
 
@@ -12,6 +17,10 @@ class RayTraceScene;
 class RayTracer
 {
 public:
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
     struct Config {
         bool enableShadow        = false;
         bool enableReflection    = false;

@@ -8,8 +8,13 @@
 struct RenderShapeData {
     ScenePrimitive primitive;
     glm::mat4 ctm; // the cumulative transformation matrix
+<<<<<<< HEAD
     // TODO: calculatue inverse CTM in Lab 5 code and store here
     glm::mat4 inverseCTM;
+=======
+    glm::mat4 inverseCTM;
+    // TODO: calculatue inverse CTM in Lab 5 code and store here
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Struct which contains all the data needed to render a scene

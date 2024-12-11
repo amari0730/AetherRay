@@ -1,14 +1,24 @@
 #include "../singleraytrace/tracesingleray.h"
 #include "../utils/scenedata.h"
+<<<<<<< HEAD
 #include "light/texturemap.h"
 #include "utils/imagereader.h"
 #include "utils/rgba.h"
+=======
+#include "../light/texturemap.h"
+#include "../utils/imagereader.h"
+#include "../utils/rgba.h"
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 #include <cfloat>
 #include <cmath>
 #include <glm/glm.hpp>
 #include <iostream>
 #include <map>
+<<<<<<< HEAD
 #include <iostream>
+=======
+
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 /**
  * @brief loadedImages: map to store pointers to already loaded textures to
  * avoid having to reload the files
@@ -96,10 +106,13 @@ SceneColor getTextureInterpolation(SceneMaterial &material,
     return linearInterpolation;
 }
 
+<<<<<<< HEAD
 auto point_on_light(glm::vec3 corner, glm::vec3 uvec, glm::vec3 vvec, int u, int v) {
     return corner + uvec * (u + 0.5f) + vvec * (v + 0.5f);
 }
 
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 /**
  * @brief phong: computes the pixel color to render based on the Phone Lighting
  * Model
@@ -125,7 +138,11 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
            SceneMaterial &material, const std::vector<SceneLightData> &lights,
            const SceneGlobalData &globalData, const RayTraceScene &scene,
            const RayTracer::Config &config, int completedReflections,
+<<<<<<< HEAD
            PrimitiveType shapeType, glm::vec4 objectSpaceIntersection) {
+=======
+           PrimitiveType shapeType, glm::vec4 objectSpaceIntersection, double time) {
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
     // normalizing directions
     normal = glm::normalize(normal);
     directionToCamera = glm::normalize(directionToCamera);
@@ -140,6 +157,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
     // iterate through each of the lights
     for (const SceneLightData &light : lights) {
         switch (light.type) {
+<<<<<<< HEAD
         case LightType::LIGHT_AREA: {
             float total = 0;
             float usteps = 6;
@@ -209,6 +227,8 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             break;
         }
 
+=======
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
         case LightType::LIGHT_POINT: {
             // get distance
             float distanceToLight = glm::length(light.pos - position);
@@ -223,9 +243,15 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             glm::vec4 directionToLight = glm::normalize(light.pos - position);
             if (config.enableShadow) {
                 // trace a shadow ray to determine possible intersection
+<<<<<<< HEAD
                 float epsilon = pow(10, -4);
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene);
+=======
+                float epsilon = pow(10, -1);
+                minDistance = traceShadowRay(position + epsilon * directionToLight,
+                                             directionToLight, scene, time);
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
             } else
                 minDistance = -1.f;
 
@@ -264,10 +290,17 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             glm::vec4 directionToLight = glm::normalize(-light.dir);
             float minDistance;
             if (config.enableShadow) {
+<<<<<<< HEAD
                 float epsilon = pow(10, -4);
                 // trace a shadow ray to determine possible intersection
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene);
+=======
+                float epsilon = pow(10, -1);
+                // trace a shadow ray to determine possible intersection
+                minDistance = traceShadowRay(position + epsilon * directionToLight,
+                                             directionToLight, scene, time);
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
             } else
                 minDistance = -1;
 
@@ -335,9 +368,15 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             float minDistance;
             if (config.enableShadow) {
                 // trace a shadow ray to determine possible intersection
+<<<<<<< HEAD
                 float epsilon = pow(10, -4);
                 minDistance = traceShadowRay(position + epsilon * directionToLight,
                                              directionToLight, scene);
+=======
+                float epsilon = pow(10, -1);
+                minDistance = traceShadowRay(position + epsilon * directionToLight,
+                                             directionToLight, scene, time);
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
             } else
                 minDistance = -1;
 
@@ -368,10 +407,14 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
             }
             break;
         }
+<<<<<<< HEAD
 
         }
 
 
+=======
+    }
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
     // add potential reflective component
     if (config.enableReflection &&
@@ -387,7 +430,11 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
         float epsilon = pow(10, -1);
         illumination +=
             toIllumination(traceRay(position + reflectedRay * epsilon, reflectedRay,
+<<<<<<< HEAD
                                                 scene, config, completedReflections + 1)) *
+=======
+                                                scene, config, completedReflections + 1, time)) *
+>>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
                         globalData.ks * material.cReflective;
     }
 
