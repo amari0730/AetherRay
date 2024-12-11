@@ -187,7 +187,7 @@ RGBA traceRay(glm::vec4 position, glm::vec4 direction,
           phong(position + minT * direction, glm::vec4(normal, 0), -direction,
                             minTMaterial, scene.getLights(), scene.getGlobalData(), scene,
                             config, completedReflections, minTType,
-                            objectPosition + minT * objectDirection, time);
+                            objectPosition + minT * objectDirection, time, min_center2);
   }
 
   // return the color hit by the ray

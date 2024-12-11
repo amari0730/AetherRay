@@ -145,12 +145,12 @@
               "primitives": [
                 {
                   "type": "movingCube",
-                  "center2": [0.0, -0.5, 0.0],
+                  "center2": [0.0, -0.7, 0.0],
                   "diffuse": [1.0, 0.0, 0.0],
                   "specular": [1.0, 1.0, 1.0],
                   "shininess": 25.0,
                   "blend": 1.0,
-                  "textureFile": "scenefiles/illuminate/textures/queenCard-2.png",
+                  "textureFile": "scenefiles/illuminate/textures/queenCard.png",
                   "textureU": 1.0,
                   "textureV": 1.0
                 }
@@ -163,12 +163,12 @@
               "primitives": [
                 {
                   "type": "movingCube",
-                  "center2": [0.0, -0.5, 0.0],
+                  "center2": [0.0, -0.7, 0.0],
                   "diffuse": [1.0, 0.0, 0.0],
                   "specular": [1.0, 1.0, 1.0],
                   "shininess": 25.0,
                   "blend": 1.0,
-                  "textureFile": "scenefiles/illuminate/textures/queenCard-2.png",
+                  "textureFile": "scenefiles/illuminate/textures/queenCard.png",
                   "textureU": 1.0,
                   "textureV": 1.0
                 }
@@ -180,12 +180,12 @@
               "primitives": [
                 {
                   "type": "movingCube",
-                  "center2": [0.0, -0.5, 0.0],
+                  "center2": [0.0, -0.7, 0.0],
                   "diffuse": [1.0, 0.0, 0.0],
                   "specular": [1.0, 1.0, 1.0],
                   "shininess": 25.0,
                   "blend": 1.0,
-                  "textureFile": "scenefiles/illuminate/textures/queenCard-2.png",
+                  "textureFile": "scenefiles/illuminate/textures/queenCard.png",
                   "textureU": 1.0,
                   "textureV": 1.0
                 }
@@ -203,8 +203,8 @@
           "groups": [
             {
               "name": "background",
-              "translate": [0, -5, 0],
-              "scale": [100, 1, 100],
+              "translate": [0, -10, 0],
+              "scale": [25, 1, 25],
               "primitives": [
                 {
                   "type": "cube",

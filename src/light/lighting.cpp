@@ -64,9 +64,9 @@ glm::vec4 toIllumination(RGBA color) {
 SceneColor getTextureInterpolation(SceneMaterial &material,
                                    const SceneGlobalData &globalData,
                                    PrimitiveType shapeType,
-                                   glm::vec4 objectSpaceIntersection) {
+                                   glm::vec4 objectSpaceIntersection, glm::vec3 center2, double time) {
     // calculate u and v
-    auto [u, v] = getShapeUV(shapeType, objectSpaceIntersection);
+    auto [u, v] = getShapeUV(shapeType, objectSpaceIntersection, time, center2);
 
     // see if image is already loaded, if not then load it
     if (!loadedImages.contains(material.textureMap.filename)) {
@@ -129,7 +129,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
            const SceneGlobalData &globalData, const RayTraceScene &scene,
            const RayTracer::Config &config, int completedReflections,
            PrimitiveType shapeType, glm::vec4 objectSpaceIntersection,
-           double time) {
+           double time, glm::vec3 center2) {
 
     // normalizing directions
     normal = glm::normalize(normal);
@@ -196,7 +196,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
                         total += 1.f;
                         if (config.enableTextureMap && material.blend > 0) {
                             SceneColor linearInterpolation = getTextureInterpolation(
-                                material, globalData, shapeType, objectSpaceIntersection);
+                                material, globalData, shapeType, objectSpaceIntersection, center2, time);
                             areaIllumination +=
                                 light.color * fAtt * linearInterpolation * dotProductLambert;
                         } else {
@@ -249,7 +249,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
                     material.blend > 0) { // complete texture mapping
                     // add interpolated color to the output
                     SceneColor linearInterpolation = getTextureInterpolation(
-                        material, globalData, shapeType, objectSpaceIntersection);
+                        material, globalData, shapeType, objectSpaceIntersection, center2, time);
                     illumination +=
                         light.color * fAtt * linearInterpolation * dotProductLambert;
                 } else
@@ -294,7 +294,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
 
                     // add interpolated color to the output
                     SceneColor linearInterpolation = getTextureInterpolation(
-                        material, globalData, shapeType, objectSpaceIntersection);
+                        material, globalData, shapeType, objectSpaceIntersection, center2, time);
                     illumination +=
                         light.color * fAtt * linearInterpolation * dotProductLambert;
                 } else
@@ -364,7 +364,7 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
                     material.blend > 0) { // complete texture mapping
                     // add interpolated color to the output
                     SceneColor linearInterpolation = getTextureInterpolation(
-                        material, globalData, shapeType, objectSpaceIntersection);
+                        material, globalData, shapeType, objectSpaceIntersection, center2, time);
                     illumination +=
                         light.color * fAtt * linearInterpolation * dotProductLambert;
                 } else

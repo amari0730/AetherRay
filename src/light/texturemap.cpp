@@ -59,6 +59,32 @@ auto CubeUV(glm::vec3 intersection) {
     }};
 }
 
+auto movingCubeUV(glm::vec3 intersection, glm::vec3 center2, double time) {
+
+    return ShapeUV{[=]() {
+        // define constants
+        glm::vec3 center_direc = (center2 - glm::vec3(0, 0, 0)); // assuming all are centered in the origin in object space.
+        glm::vec3 new_center = glm::vec3(0, 0, 0) + center_direc * (float)time;
+        float x = intersection[0] - new_center[0], y = intersection[1] - new_center[1], z = intersection[2] - new_center[2];
+        // compute the UV coordinates
+        if (withinEpsilon(x, 0.5f))
+            return std::tuple(-z + 0.5f, y + 0.5f);
+        else if (withinEpsilon(x, -0.5f))
+            return std::tuple(z + 0.5f, y + 0.5f);
+        else if (withinEpsilon(y, 0.5))
+            return std::tuple(x + 0.5f, -z + 0.5f);
+        else if (withinEpsilon(y, -0.5))
+            return std::tuple(x + 0.5f, z + 0.5f);
+        else if (withinEpsilon(z, 0.5))
+            return std::tuple(x + 0.5f, y + 0.5f);
+        else if (withinEpsilon(z, -0.5))
+            return std::tuple(-x + 0.5f, y + 0.5f);
+        else // should never reach here
+            return std::tuple(-1.f, -1.f);
+    }};
+
+}
+
 /**
  * @brief ConeUV: gets UV coordinates based on intersection with a cone
  * @param intersection: intersection point on the cone in object space
@@ -130,7 +156,7 @@ auto CylinderUV(glm::vec3 intersection) {
  * @return the u and v coordinates of the intersection with the shape
  */
 std::tuple<float, float> getShapeUV(PrimitiveType shapeType,
-                                    glm::vec3 intersection) {
+                                    glm::vec3 intersection, double time, glm::vec3 center2) {
     switch (shapeType) {
     case PrimitiveType::PRIMITIVE_CUBE: {
         return CubeUV(intersection).getUV();
@@ -152,6 +178,7 @@ std::tuple<float, float> getShapeUV(PrimitiveType shapeType,
         // unimplemented
         break;
     case PrimitiveType::PRIMITIVE_CUBE_MOVING:
+        return movingCubeUV(intersection, center2, time).getUV();
         // unimplemented
         break;
     case PrimitiveType::PRIMITIVE_CONE_MOVING:

@@ -12,6 +12,6 @@ RGBA phong(glm::vec4 position, glm::vec4 normal, glm::vec4 directionToCamera,
            const SceneGlobalData &globalData, const RayTraceScene &scene,
            const RayTracer::Config &config, int completedReflections,
            PrimitiveType shapeType, glm::vec4 objectSpaceIntersection,
-           double time);
+           double time, glm::vec3 center2);
 
 #endif // LIGHTING_H
