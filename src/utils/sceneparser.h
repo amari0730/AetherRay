@@ -1,20 +1,14 @@
 #pragma once
 
 #include "scenedata.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 // Struct which contains data for a single primitive, to be used for rendering
 struct RenderShapeData {
     ScenePrimitive primitive;
     glm::mat4 ctm; // the cumulative transformation matrix
-<<<<<<< HEAD
-    // TODO: calculatue inverse CTM in Lab 5 code and store here
     glm::mat4 inverseCTM;
-=======
-    glm::mat4 inverseCTM;
-    // TODO: calculatue inverse CTM in Lab 5 code and store here
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Struct which contains all the data needed to render a scene
@@ -30,7 +24,9 @@ class SceneParser {
 public:
     // Parse the scene and store the results in renderData.
     // @param filepath    The path of the scene file to load.
-    // @param renderData  On return, this will contain the metadata of the loaded scene.
-    // @return            A boolean value indicating whether the parse was successful.
+    // @param renderData  On return, this will contain the metadata of the loaded
+    // scene.
+    // @return            A boolean value indicating whether the parse was
+    // successful.
     static bool parse(std::string filepath, RenderData &renderData);
 };

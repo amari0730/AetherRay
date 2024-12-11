@@ -1,4 +1,7 @@
 #include "imagereader.h"
+#include "stdlib.h"
+#include <iostream>
+#include <ostream>
 
 /**
  * @brief Stores the image specified from the input file in this class's

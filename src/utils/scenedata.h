@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <glm/glm.hpp>
 
@@ -10,10 +10,7 @@ enum class LightType {
     LIGHT_POINT,
     LIGHT_DIRECTIONAL,
     LIGHT_SPOT,
-<<<<<<< HEAD
     LIGHT_AREA,
-=======
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Enum of the types of primitives that might be in the scene
@@ -22,15 +19,11 @@ enum class PrimitiveType {
     PRIMITIVE_CONE,
     PRIMITIVE_CYLINDER,
     PRIMITIVE_SPHERE,
-<<<<<<< HEAD
-    PRIMITIVE_MESH
-=======
     PRIMITIVE_MESH,
     PRIMITIVE_SPHERE_MOVING,
     PRIMITIVE_CUBE_MOVING,
     PRIMITIVE_CONE_MOVING,
     PRIMITIVE_CYLINDER_MOVING
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Enum of the types of transformations that can be applied
@@ -45,7 +38,8 @@ enum class TransformationType {
 using SceneColor = glm::vec4;
 
 // Struct which contains the global color coefficients of a scene.
-// These are multiplied with the object-specific materials in the lighting equation.
+// These are multiplied with the object-specific materials in the lighting
+// equation.
 struct SceneGlobalData {
     float ka; // Ambient term
     float kd; // Diffuse term
@@ -66,12 +60,8 @@ struct SceneLight {
     float angle;    // Only applicable to spot lights, in RADIANS
 
     float width, height; // No longer supported (area lights)
-<<<<<<< HEAD
     glm::vec3 uvec;
     glm::vec3 vvec;
-
-=======
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Struct which contains data for a single light with CTM applied
@@ -82,19 +72,16 @@ struct SceneLightData {
     SceneColor color;
     glm::vec3 function; // Attenuation function
 
-    glm::vec4 pos; // Position with CTM applied (Not applicable to directional lights)
+    glm::vec4
+        pos; // Position with CTM applied (Not applicable to directional lights)
     glm::vec4 dir; // Direction with CTM applied (Not applicable to point lights)
 
     float penumbra; // Only applicable to spot lights, in RADIANS
     float angle;    // Only applicable to spot lights, in RADIANS
 
-<<<<<<< HEAD
     float width, height;
     glm::vec3 uvec;
     glm::vec3 vvec;
-=======
-    float width, height; // No longer supported (area lights)
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 };
 
 // Struct which contains data for the camera of a scene
@@ -119,8 +106,7 @@ struct SceneFileMap {
     float repeatU;
     float repeatV;
 
-    void clear()
-    {
+    void clear() {
         isUsed = false;
         repeatU = 0.0f;
         repeatV = 0.0f;
@@ -128,17 +114,20 @@ struct SceneFileMap {
     }
 };
 
-// Struct which contains data for a material (e.g. one which might be assigned to an object)
+// Struct which contains data for a material (e.g. one which might be assigned
+// to an object)
 struct SceneMaterial {
     SceneColor cAmbient;  // Ambient term
     SceneColor cDiffuse;  // Diffuse term
     SceneColor cSpecular; // Specular term
     float shininess;      // Specular exponent
 
-    SceneColor cReflective; // Used to weight contribution of reflected ray lighting (via multiplication)
+    SceneColor cReflective; // Used to weight contribution of reflected ray
+        // lighting (via multiplication)
 
-    SceneColor cTransparent; // Transparency;        used for extra credit (refraction)
-    float ior;               // Index of refraction; used for extra credit (refraction)
+    SceneColor
+        cTransparent; // Transparency;        used for extra credit (refraction)
+    float ior;        // Index of refraction; used for extra credit (refraction)
 
     SceneFileMap textureMap; // Used for texture mapping
     float blend;             // Used for texture mapping
@@ -146,8 +135,7 @@ struct SceneMaterial {
     SceneColor cEmissive; // Not used
     SceneFileMap bumpMap; // Not used
 
-    void clear()
-    {
+    void clear() {
         cAmbient = glm::vec4(0);
         cDiffuse = glm::vec4(0);
         cSpecular = glm::vec4(0);
@@ -167,44 +155,35 @@ struct SceneMaterial {
 };
 
 // Struct which contains data for a single primitive in a scene
-<<<<<<< HEAD
-struct ScenePrimitive {
-    PrimitiveType type;
-    SceneMaterial material;
-    std::string meshfile; // Used for triangle meshes
-};
-=======
-
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
-
-// Struct which contains data for a transformation.
-struct SceneTransformation {
-    TransformationType type;
-
-    glm::vec3 translate; // Only applicable when translating. Defines t_x, t_y, and t_z, the amounts to translate by, along each axis.
-    glm::vec3 scale;     // Only applicable when scaling.     Defines s_x, s_y, and s_z, the amounts to scale by, along each axis.
-    glm::vec3 rotate;    // Only applicable when rotating.    Defines the axis of rotation; should be a unit vector.
-    float angle;         // Only applicable when rotating.    Defines the angle to rotate by in RADIANS, following the right-hand rule.
-    glm::mat4 matrix;    // Only applicable when transforming by a custom matrix. This is that custom matrix.
-};
-<<<<<<< HEAD
-=======
 struct ScenePrimitive {
     PrimitiveType type;
     SceneMaterial material;
     std::string meshfile; // Used for triangle meshes
     glm::vec3 center2;
 };
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
-// Struct which represents a node in the scene graph/tree, to be parsed by the student's `SceneParser`.
-struct SceneNode {
-    std::vector<SceneTransformation*> transformations; // Note the order of transformations described in lab 5
-    std::vector<ScenePrimitive*> primitives;
-    std::vector<SceneLight*> lights;
-    std::vector<SceneNode*> children;
+// Struct which contains data for a transformation.
+struct SceneTransformation {
+    TransformationType type;
+
+    glm::vec3 translate; // Only applicable when translating. Defines t_x, t_y,
+        // and t_z, the amounts to translate by, along each axis.
+    glm::vec3 scale;  // Only applicable when scaling.     Defines s_x, s_y, and
+        // s_z, the amounts to scale by, along each axis.
+    glm::vec3 rotate; // Only applicable when rotating.    Defines the axis of
+        // rotation; should be a unit vector.
+    float angle; // Only applicable when rotating.    Defines the angle to rotate
+        // by in RADIANS, following the right-hand rule.
+    glm::mat4 matrix; // Only applicable when transforming by a custom matrix.
+        // This is that custom matrix.
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
+// Struct which represents a node in the scene graph/tree, to be parsed by the
+// student's `SceneParser`.
+struct SceneNode {
+    std::vector<SceneTransformation *>
+        transformations; // Note the order of transformations described in lab 5
+    std::vector<ScenePrimitive *> primitives;
+    std::vector<SceneLight *> lights;
+    std::vector<SceneNode *> children;
+};

@@ -1,12 +1,9 @@
 #pragma once
 
 #include <glm/glm.hpp>
-<<<<<<< HEAD
-#include "utils/rgba.h"
-=======
+
 #include "../utils/rgba.h"
 #include <random>
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 
 // A forward declaration for the RaytraceScene class
 
@@ -14,25 +11,20 @@ class RayTraceScene;
 
 // A class representing a ray-tracer
 
-class RayTracer
-{
+class RayTracer {
 public:
-<<<<<<< HEAD
-=======
-
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
     struct Config {
-        bool enableShadow        = false;
-        bool enableReflection    = false;
-        bool enableRefraction    = false;
-        bool enableTextureMap    = false;
+        bool enableShadow = false;
+        bool enableReflection = false;
+        bool enableRefraction = false;
+        bool enableTextureMap = false;
         bool enableTextureFilter = false;
-        bool enableParallelism   = false;
-        bool enableSuperSample   = false;
-        bool enableAcceleration  = false;
-        bool enableDepthOfField  = false;
-        int maxRecursiveDepth    = 4;
-        bool onlyRenderNormals   = false;
+        bool enableParallelism = false;
+        bool enableSuperSample = false;
+        bool enableAcceleration = false;
+        bool enableDepthOfField = false;
+        int maxRecursiveDepth = 4;
+        bool onlyRenderNormals = false;
     };
 
 public:
@@ -47,4 +39,3 @@ public:
 private:
     const Config m_config;
 };
-

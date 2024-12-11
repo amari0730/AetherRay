@@ -1,10 +1,6 @@
 #include "texturemap.h"
 #include "../shapes/shapeoverall.h"
-<<<<<<< HEAD
-#include "utils/scenedata.h"
-=======
 #include "../utils/scenedata.h"
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
 #include <cmath>
 #include <iostream>
 #include <numbers>
@@ -152,6 +148,17 @@ std::tuple<float, float> getShapeUV(PrimitiveType shapeType,
         // unimplemented
         break;
     }
+    case PrimitiveType::PRIMITIVE_SPHERE_MOVING:
+        // unimplemented
+        break;
+    case PrimitiveType::PRIMITIVE_CUBE_MOVING:
+        // unimplemented
+        break;
+    case PrimitiveType::PRIMITIVE_CONE_MOVING:
+        // unimplemented
+        break;
+    case PrimitiveType::PRIMITIVE_CYLINDER_MOVING:
+        break;
     }
     // default return in error
     return std::tuple(-1.f, -1.f);
