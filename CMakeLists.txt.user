@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 14.0.1, 2024-12-10T13:53:41. -->
+<!-- Written by QtCreator 14.0.1, 2024-12-10T17:13:45. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -348,7 +348,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.projects_ray</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">projects_ray</value>
     <value type="bool" key="ProjectExplorer.RunConfiguration.Customized">true</value>
-    <value type="QString" key="RunConfiguration.Arguments">/Users/mohammadhijaz/Desktop/cs-1230/final-project/template_inis/intersect/directional_light_1.ini</value>
+    <value type="QString" key="RunConfiguration.Arguments">/Users/mohammadhijaz/Desktop/cs-1230/final-project/template_inis/intersect/falling_sphere.ini</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
