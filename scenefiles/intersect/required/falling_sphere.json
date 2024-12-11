@@ -7,8 +7,8 @@
     "transparentCoeff": 0
   },
   "cameraData": {
-    "position": [3.0, 100.0, 3.0],
-    "up": [0.0, 1.0, 0.0],
+    "position": [3.0, 50.0, 3.0],
+    "up": [0.0, 0.1, 0.0],
     "heightAngle": 30.0,
     "focus": [0.0, 0.0, 0.0]
   },
@@ -39,7 +39,7 @@
               "primitives": [
                 {
                   "type": "movingCube",
-                  "center2": [0, -0.2, 0],
+                  "center2": [0, -0.5, 0],
                   "diffuse": [0.635, 0.761, 0.91],
                   "specular": [1, 1, 1],
                   "ambient": [0.635, 0.761, 0.91],
@@ -55,7 +55,7 @@
               "primitives": [
                 {
                   "type": "movingCube",
-                  "center2": [0, -0.2, 0],
+                  "center2": [0, -0.5, 0],
                   "diffuse": [0.635, 0.761, 0.91],
                   "specular": [1, 1, 1],
                   "ambient": [0.635, 0.761, 0.91],
@@ -71,7 +71,7 @@
               "primitives": [
                 {
                   "type": "movingCube",
-                  "center2": [0, -0.2, 0],
+                  "center2": [0, -0.5, 0],
                   "diffuse": [0.635, 0.761, 0.91],
                   "specular": [1, 1, 1],
                   "ambient": [0.635, 0.761, 0.91],
@@ -86,7 +86,8 @@
               "scale": [0.2, 0.2, 0.5],
               "primitives": [
                 {
-                  "type": "cube",
+                  "type": "movingCube",
+                  "center2": [0, -0.5, 0],
                   "diffuse": [0.635, 0.761, 0.91],
                   "specular": [1, 1, 1],
                   "ambient": [0.635, 0.761, 0.91],
@@ -102,7 +103,7 @@
               "primitives": [
                 {
                   "type": "movingSphere",
-                  "center2": [0, -0.4, 0],
+                  "center2": [0, -0.5, 0],
                   "diffuse": [0.635, 0.761, 0.91],
                   "specular": [1, 1, 1],
                   "ambient": [0.635, 0.761, 0.91],
@@ -117,7 +118,8 @@
               "scale": [0.25, 0.7, -0.35],
               "primitives": [
                 {
-                  "type": "cube",
+                  "type": "movingCube",
+                  "center2": [0, -0.5, 0],
                   "diffuse": [0.635, 0.761, 0.91],
                   "specular": [1, 1, 1],
                   "ambient": [0.635, 0.761, 0.91],
@@ -132,44 +134,51 @@
     {
       "groups": [
         {
-          "translate": [2.0, 0.0, 0.0],
-          "scale": [0.2, 0.5, 0.01],
-          "primitives": [
+          "name" : "cards",
+          "translate" : [0.0, 0.0, 0.0],
+          "scale" : [0.2, 0.1, 0.1],
+          "groups": [
             {
-              "type": "movingCube",
-              "center2": [0.0, -0.1, 0.0],
-              "diffuse": [1.0, 0.0, 0.0],
-              "specular": [1.0, 1.0, 1.0],
-              "shininess": 25.0
-            }
-          ]
-        },
-        {
-          "name": "card2",
-          "translate": [1.0, 1.0, 0.0],
-          "scale": [0.2, 0.5, 0.01],
-          "primitives": [
+                "name" : "card1",
+                "translate": [2.0, 4.0, 4.0],
+                
+                "primitives": [
+                    {
+                    "type": "movingCube",
+                    "center2": [0.0, -0.5, 0.0],
+                    "diffuse": [1.0, 0.0, 0.0],
+                    "specular": [1.0, 1.0, 1.0],
+                    "shininess": 25.0
+                    }
+                ]
+            },
             {
-              "type": "movingCube",
-              "center2": [0.0, -0.1, 0.0],
-              "diffuse": [1.0, 0.0, 0.0],
-              "specular": [1.0, 1.0, 1.0],
-              "shininess": 25.0
-            }
-          ]
-        },
-        {
-          "name": "card3",
-          "translate": [-1.0, 1.0, 0.0],
-          "scale": [0.2, 0.5, 0.01],
-          "primitives": [
-            {
-              "type": "movingCube",
-              "center2": [0.0, -0.1, 0.0],
-              "diffuse": [1.0, 0.0, 0.0],
-              "specular": [1.0, 1.0, 1.0],
-              "shininess": 25.0
-            }
+                "name": "card2",
+                "translate": [-2.0, 3.0, -4.0],
+                
+                "primitives": [
+                  {
+                    "type": "movingCube",
+                    "center2": [0.0, -0.5, 0.0],
+                    "diffuse": [1.0, 0.0, 0.0],
+                    "specular": [1.0, 1.0, 1.0],
+                    "shininess": 25.0
+                  }
+                ]
+              },
+              {
+                "name": "card3",
+                "translate": [-4.0, 7, 0.0],
+                "primitives": [
+                  {
+                    "type": "movingCube",
+                    "center2": [0.0, -0.5, 0.0],
+                    "diffuse": [1.0, 0.0, 0.0],
+                    "specular": [1.0, 1.0, 1.0],
+                    "shininess": 25.0
+                  }
+                ]
+              }
           ]
         }
       ]
