@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 # AetherRay
-=======
+
 <a name="readme-top"></a>
 
 # AetherRay
@@ -48,4 +47,3 @@ or something like that based on your `python` path. Note that the paths mentione
 There are currently no known errors or bugs in our program.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
->>>>>>> 2b4a126666c55702a96a7ee627c657304f86348e
