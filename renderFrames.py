@@ -13,9 +13,11 @@ with open(path, "r") as f:
 # print(data['groups'][1]['groups'][0][''])
 # print(data["groups"][2]["groups"][0]["groups"])
 angle = 0
-for frame in range(0, 11):
+frames_num = 60
+falling_speed = (0.8 * 11) / frames_num
+for frame in range(0, frames_num):
     print("creating new frame JSON frame i: ", frame)
-    data["groups"][1]["groups"][0]["translate"][1] -= 0.8
+    data["groups"][1]["groups"][0]["translate"][1] -= falling_speed
     data["groups"][1]["groups"][0]["rotate"][3] += (
         math.sin(frame * 0.1) * 10
     )  # might change later, rotate Alice.
@@ -33,7 +35,7 @@ for frame in range(0, 11):
     cards = data["groups"][2]["groups"][0]["groups"]
     card_speeds = [random.uniform(-0.5, 0.5) for _ in range(3)]
     card_speeds[1] = random.uniform(
-        -0.8, -0.3
+        -falling_speed, -falling_speed + 0.1 
     )  # should only fall? or should it go up sometimes?
 
     for i in range(len(cards)):
@@ -87,7 +89,7 @@ ini_str = """[IO]
 #     depthoffield = false
 # """
 lines = ini_str.splitlines()
-for frame in range(0, 11):
+for frame in range(0, frames_num):
     print("creating new frame ini frame i: ", frame)
     cur_lines = lines
     cur_lines[1] = (
@@ -120,7 +122,7 @@ argument = "/Users/mohammadhijaz/Desktop/cs-1230/final-project/iniFrames/"
 # argument = (
 #     "/Users/davideskilson/other/browncs/CSCI-1230/final-project/AetherRay/iniFrames/"
 # )
-for frame in range(0, 11):
+for frame in range(0, frames_num):
     cur_argument = argument
     cur_argument += "frame" + str(frame) + ".ini"
     # print(cur_argument)
